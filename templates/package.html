@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Linux-pkg-info - {{ package["Package"] }}</title>
+	<style type="text/css">
+		a {
+			text-decoration: none;
+			color: black;
+		}
+
+		#desc {
+			width: 33%;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>{{ package["Package"] }}</h1>
+
+	<h3>Description</h3>
+	<div id="desc">
+		<p>{{ package["Description"] }}</p>
+	</div>
+
+	{% if package["Depends"] %}
+	<h3>Dependencies</h3>
+	<ul>
+		{% for dep in package["Depends"] %}
+		<li><a href="/package?name={{ dep }}">{{ dep }}</a></li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+
+	{% if package["Reverse_Dependencies"] %}
+	<h3>Reverse Dependencies</h3>
+	<ul>
+		{% for dep in package["Reverse_Dependencies"] %}
+		<li><a href="/package?name={{ dep }}">{{ dep }}</a></li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+</body>
+
+</html>
