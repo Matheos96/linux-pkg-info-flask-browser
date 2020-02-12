@@ -53,7 +53,8 @@ def find_create_dependencies(obj, file_lines):
                         break
             # If dependency has no pipeline character, simply add it to the list
             else:
-                final_dep.append(dep)
+                if dep not in final_dep:
+                    final_dep.append(dep)
 
         # Set the Depends key to the new list in original object
         obj['Depends'] = final_dep
@@ -67,7 +68,8 @@ def find_create_dependencies(obj, file_lines):
                 curr_pkg = line.split(':')[1].strip()  # Set name of current package
             # If the package has a depends line we check if the package in our object is on that line, if so add it
             elif line.startswith('Depends: ') and len(curr_pkg) > 0:
-                if obj['Package'] in line:
+                # Make sure we dont add current package. as sometime "in" matches with packages that include the name of curr_pkg
+                if obj['Package'] in line and obj['Package'] != curr_pkg:
                     reverse_deps.append(curr_pkg)
         # Add the key+value to object if there are reverse dependencies
         if len(reverse_deps) > 0:
